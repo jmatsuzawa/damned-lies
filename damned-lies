@@ -1,0 +1,75 @@
+#!/bin/sh
+
+URL=http://l10n.gnome.org
+BRANCH=master
+TARGET=po
+MODULE=
+ACTIVITY=
+
+usage() {
+  cmd=`basename $0`
+  echo "Usage: $cmd [-b <branch>] [-m] <module>"
+}
+
+OPT=`getopt ab:hm "$@"`
+if [ $? -ne 0 ]; then
+  usage >&2
+  exit 1
+fi
+eval set -- "$OPT"
+while :; do
+  case "$1" in
+  -a)
+    ACTIVITY=true
+    break
+    ;;
+  -b)
+    BRANCH=`echo "$2" | sed -e 's/^\([0-9]\{1,\}\)[-.]\([0-9]\{1,\}\)$/gnome-\1-\2/'`
+    shift 2
+    ;;
+  -h)
+    usage
+    exit 0
+    ;;
+  -m)
+    TARGET=help
+    shift 1
+    ;;
+  --)
+    shift 1
+    break;
+    ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+  esac
+done
+
+if [ x"$ACTIVITY" != x ]; then
+  URL="${URL}/vertimus/ja/activity_summary/"
+else
+  MODULE="$1"
+  case "$MODULE" in
+  gnome-help)
+    MODULE=gnome-user-docs
+    TARGET=gnome-help
+    ;;
+  esac
+
+  if [ x"$MODULE" != x ]; then
+    URL="${URL}/vertimus/${MODULE}/${BRANCH}/${TARGET}/ja"
+  fi
+fi
+
+if [ x"$VIM" = x ]; then
+  EDITOR='vim'
+else
+#   EDITOR="vim -c 'map! <C-t> <ESC>'"
+  EDITOR="nano"
+fi
+export EDITOR
+LANG=en_US.utf8
+export LANG
+
+w3m "$URL"
