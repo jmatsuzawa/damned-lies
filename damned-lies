@@ -11,7 +11,7 @@ usage() {
   echo "Usage: $cmd [-b <branch>] [-m] <module>"
 }
 
-OPT=`getopt ab:hm "$@"`
+OPT=`getopt ab:dhm "$@"`
 if [ $? -ne 0 ]; then
   usage >&2
   exit 1
@@ -26,6 +26,10 @@ while :; do
   -b)
     BRANCH=`echo "$2" | sed -e 's/^\([0-9]\{1,\}\)[-.]\([0-9]\{1,\}\)$/gnome-\1-\2/'`
     shift 2
+    ;;
+  -d)
+    MODULE=`basename "$PWD"`
+    shift 1
     ;;
   -h)
     usage
@@ -49,17 +53,16 @@ done
 if [ x"$ACTIVITY" != x ]; then
   URL="${URL}/vertimus/ja/activity_summary/"
 else
-  MODULE="$1"
-  case "$MODULE" in
-  gnome-help)
-    MODULE=gnome-user-docs
-    TARGET=gnome-help
-    ;;
-  esac
-
-  if [ x"$MODULE" != x ]; then
-    URL="${URL}/vertimus/${MODULE}/${BRANCH}/${TARGET}/ja"
+  if [ x"$MODULE" = x ]; then
+    MODULE="$1"
+    case "$MODULE" in
+    gnome-help)
+      MODULE=gnome-user-docs
+      TARGET=gnome-help
+      ;;
+    esac
   fi
+  URL="${URL}/vertimus/${MODULE}/${BRANCH}/${TARGET}/ja"
 fi
 
 if [ x"$VIM" = x ]; then
