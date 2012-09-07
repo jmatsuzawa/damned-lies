@@ -29,6 +29,10 @@ while :; do
     ;;
   -d)
     MODULE=`basename "$PWD"`
+    if echo $MODULE | grep -q -- '-m$'; then
+      MODULE=`echo $MODULE | sed -e 's/\(.*\)-m$/\1/'`
+      TARGET=help
+    fi
     shift 1
     ;;
   -h)
@@ -72,7 +76,12 @@ else
   EDITOR="nano"
 fi
 export EDITOR
-LANG=en_US.utf8
-export LANG
+if lsb_release -d |grep Debian -q; then
+  LANGUAGE=en
+  export LANGUAGE
+else
+  LANG=en_US.UTF-8
+  export LANG
+fi
 
 w3m "$URL"
