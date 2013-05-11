@@ -92,4 +92,4 @@ else
   export LANG
 fi
 
-w3m "$URL"
+w3m -no-mouse "$URL"
