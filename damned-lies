@@ -69,6 +69,13 @@ else
       MODULE=gnome-getting-started-docs
       TARGET=gnome-help
       ;;
+    gtk|gtk+|gtk-ui|gtk+-ui)
+      MODULE=Gtk-UI
+      ;;
+    gtk-prop*|gtk+-prop*)
+      MODULE=Gtk-properties
+      TARGET=po-properties
+      ;;
     esac
   if [ x"$BRANCH" = x ]; then
     curbranch=`basename "\`git symbolic-ref HEAD 2>/dev/null\`"`
