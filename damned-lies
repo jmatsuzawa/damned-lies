@@ -59,13 +59,17 @@ if [ x"$ACTIVITY" != x ]; then
 else
   if [ x"$MODULE" = x ]; then
     MODULE="$1"
+  fi
     case "$MODULE" in
     gnome-help)
       MODULE=gnome-user-docs
       TARGET=gnome-help
       ;;
+    getting-started|gnome-getting-started-docs)
+      MODULE=gnome-getting-started-docs
+      TARGET=gnome-help
+      ;;
     esac
-  fi
   if [ x"$BRANCH" = x ]; then
     curbranch=`basename "\`git symbolic-ref HEAD 2>/dev/null\`"`
     if [ x"$curbranch" = x ]; then
