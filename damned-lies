@@ -24,15 +24,21 @@ while :; do
     break
     ;;
   -b)
-    BRANCH=`echo "$2" | sed -e 's/^\([0-9]\{1,\}\)[-.]\([0-9]\{1,\}\)$/gnome-\1-\2/'`
+    BRANCH=$2
     shift 2
     ;;
   -d)
     MODULE=`basename "$PWD"`
-    if echo $MODULE | grep -q -- '-m$'; then
-      MODULE=`echo $MODULE | sed -e 's/\(.*\)-m$/\1/'`
-      TARGET=help
-    fi
+    case "$MODULE" in
+      *-m)
+        MODULE=`echo "$MODULE" | sed -e 's/\(.*\)-m$/\1/'`
+        TARGET=help
+        ;;
+      *-b-*)
+        BRANCH=`echo "$MODULE" | sed -e 's/^.*-b-\(.*\)$/\1/'`
+        MODULE=`echo "$MODULE" | sed -e 's/^\(.*\)-b-.*$/\1/'`
+        ;;
+    esac
     shift 1
     ;;
   -h)
@@ -84,6 +90,8 @@ else
     else
       BRANCH="$curbranch"
     fi
+  else
+    BRANCH=`echo "$BRANCH" | sed -e 's/^\([0-9]\{1,\}\)[-.]\([0-9]\{1,\}\)$/gnome-\1-\2/'`
   fi
   URL="${URL}/vertimus/${MODULE}/${BRANCH}/${TARGET}/ja"
 fi
