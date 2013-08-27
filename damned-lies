@@ -28,17 +28,7 @@ while :; do
     shift 2
     ;;
   -d)
-    MODULE=`basename "$PWD"`
-    case "$MODULE" in
-      *-m)
-        MODULE=`echo "$MODULE" | sed -e 's/\(.*\)-m$/\1/'`
-        TARGET=help
-        ;;
-      *-b-*)
-        BRANCH=`echo "$MODULE" | sed -e 's/^.*-b-\(.*\)$/\1/'`
-        MODULE=`echo "$MODULE" | sed -e 's/^\(.*\)-b-.*$/\1/'`
-        ;;
-    esac
+    # Now this is default funcion
     shift 1
     ;;
   -h)
@@ -60,29 +50,38 @@ while :; do
   esac
 done
 
-if [ x"$ACTIVITY" != x ]; then
-  URL="${URL}/vertimus/ja/activity_summary/"
+if [ x"$1" = x ]; then
+  MODULE=`basename "$PWD"`
 else
-  if [ x"$MODULE" = x ]; then
-    MODULE="$1"
-  fi
-    case "$MODULE" in
-    gnome-help)
-      MODULE=gnome-user-docs
-      TARGET=gnome-help
-      ;;
-    getting-started|gnome-getting-started-docs)
-      MODULE=gnome-getting-started-docs
-      TARGET=gnome-help
-      ;;
-    gtk|gtk+|gtk-ui|gtk+-ui)
-      MODULE=Gtk-UI
-      ;;
-    gtk-prop*|gtk+-prop*)
-      MODULE=Gtk-properties
-      TARGET=po-properties
-      ;;
-    esac
+  MODULE="$1"
+fi
+
+if [ x"$ACTIVITY" = x ]; then
+  case "$MODULE" in
+  *-m)
+    MODULE=`echo "$MODULE" | sed -e 's/\(.*\)-m$/\1/'`
+    TARGET=help
+    ;;
+  *-b-*)
+    BRANCH=`echo "$MODULE" | sed -e 's/^.*-b-\(.*\)$/\1/'`
+    MODULE=`echo "$MODULE" | sed -e 's/^\(.*\)-b-.*$/\1/'`
+    ;;
+  gnome-help)
+    MODULE=gnome-user-docs
+    TARGET=gnome-help
+    ;;
+  getting-started|gnome-getting-started-docs)
+    MODULE=gnome-getting-started-docs
+    TARGET=gnome-help
+    ;;
+  gtk|gtk+|gtk-ui|gtk+-ui)
+    MODULE=Gtk-UI
+    ;;
+  gtk-prop*|gtk+-prop*)
+    MODULE=Gtk-properties
+    TARGET=po-properties
+    ;;
+  esac
   if [ x"$BRANCH" = x ]; then
     curbranch=`basename "\`git symbolic-ref HEAD 2>/dev/null\`"`
     if [ x"$curbranch" = x ]; then
@@ -94,6 +93,8 @@ else
     BRANCH=`echo "$BRANCH" | sed -e 's/^\([0-9]\{1,\}\)[-.]\([0-9]\{1,\}\)$/gnome-\1-\2/'`
   fi
   URL="${URL}/vertimus/${MODULE}/${BRANCH}/${TARGET}/ja"
+else
+  URL="${URL}/vertimus/ja/activity_summary/"
 fi
 
 if [ x"$VIM" = x ]; then
