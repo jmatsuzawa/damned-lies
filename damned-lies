@@ -75,10 +75,11 @@ if [ x"$ACTIVITY" = x ]; then
     TARGET=gnome-help
     ;;
   gtk|gtk+|gtk-ui|gtk+-ui)
-    MODULE=Gtk-UI
+#     MODULE=Gtk-UI
+    MODULE=gtk+
     ;;
   gtk-prop*|gtk+-prop*)
-    MODULE=Gtk-properties
+    MODULE=gtk+
     TARGET=po-properties
     ;;
   esac
