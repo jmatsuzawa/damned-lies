@@ -82,6 +82,10 @@ if [ x"$ACTIVITY" = x ]; then
     MODULE=gtk+
     TARGET=po-properties
     ;;
+  webkit)
+    MODULE=webkit
+    TARGET=webkit
+    BRANCH=HEAD
   esac
   if [ x"$BRANCH" = x ]; then
     curbranch=`basename "\`git symbolic-ref HEAD 2>/dev/null\`"`
