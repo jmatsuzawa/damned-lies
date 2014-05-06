@@ -11,7 +11,7 @@ usage() {
   echo "Usage: $cmd [-b <branch>] [-m] <module>"
 }
 
-OPT=`getopt ab:dhm "$@"`
+OPT=`getopt ab:dhmt: "$@"`
 if [ $? -ne 0 ]; then
   usage >&2
   exit 1
@@ -38,6 +38,10 @@ while :; do
   -m)
     TARGET=help
     shift 1
+    ;;
+  -t)
+    TARGET=$2
+    shift 2
     ;;
   --)
     shift 1
