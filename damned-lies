@@ -1,6 +1,6 @@
 #!/bin/sh
 
-URL=http://l10n.gnome.org
+URL=https://l10n.gnome.org
 BRANCH=
 TARGET=po
 MODULE=
@@ -113,12 +113,5 @@ else
   EDITOR="nano"
 fi
 export EDITOR
-if lsb_release -d |grep Debian -q; then
-  LANGUAGE=en
-  export LANGUAGE
-else
-  LANG=en_US.UTF-8
-  export LANG
-fi
 
-w3m -no-mouse "$URL"
+w3m -header 'Accept-Language:en_US' -no-mouse "$URL"
