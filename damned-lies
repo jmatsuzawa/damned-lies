@@ -64,16 +64,18 @@ else
   MODULE="$1"
 fi
 
+if echo "$MODULE" |grep -q -- '-m$'; then
+  MODULE=`echo "$MODULE" | sed -e 's/\(.*\)-m$/\1/'`
+  TARGET=help
+fi
+if echo "$MODULE" |grep -q -- '-b-'; then
+  BRANCH=`echo "$MODULE" | sed -e 's/^.*-b-\(.*\)$/\1/'`
+  MODULE=`echo "$MODULE" | sed -e 's/^\(.*\)-b-.*$/\1/'`
+fi
+
+
 if [ x"$ACTIVITY" = x ]; then
   case "$MODULE" in
-  *-m)
-    MODULE=`echo "$MODULE" | sed -e 's/\(.*\)-m$/\1/'`
-    TARGET=help
-    ;;
-  *-b-*)
-    BRANCH=`echo "$MODULE" | sed -e 's/^.*-b-\(.*\)$/\1/'`
-    MODULE=`echo "$MODULE" | sed -e 's/^\(.*\)-b-.*$/\1/'`
-    ;;
   gnome-help)
     MODULE=gnome-user-docs
     TARGET=gnome-help
@@ -89,6 +91,9 @@ if [ x"$ACTIVITY" = x ]; then
   gtk-prop*|gtk+-prop*)
     MODULE=gtk+
     TARGET=po-properties
+    ;;
+  release-notes)
+    TARGET=help
     ;;
   webkit)
     MODULE=webkit
