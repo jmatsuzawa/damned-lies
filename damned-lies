@@ -1,4 +1,8 @@
 #!/bin/sh
+LC_ALL=en_US.UTF-8
+export LANG
+LANGUAGE=en
+export LANGUAGE
 
 URL=https://l10n.gnome.org
 BRANCH=
@@ -74,9 +78,9 @@ if [ x"$ACTIVITY" = x ]; then
     MODULE=gnome-user-docs
     TARGET=gnome-help
     ;;
-  getting-started|gnome-getting-started-docs)
+  getting-started|gnome-getting-started|gnome-getting-started-docs)
     MODULE=gnome-getting-started-docs
-    TARGET=gnome-help
+    TARGET=getting-started
     ;;
   gtk|gtk+|gtk-ui|gtk+-ui)
 #     MODULE=Gtk-UI
